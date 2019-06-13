@@ -25,6 +25,6 @@ router.route('/users/:id')
     })
 router.route('/auth')
     .post(function(req,res){
-        res.send("login")
+        userController.login(req,res)
     })
 module.exports = router

@@ -16,13 +16,14 @@ let userSchema = new mongoose.Schema({
     numberInscription: Number
     
 })
-/*userSchema.pre("save", function() {
+userSchema.pre("save", async function(next) {
     const salt = 10
-    const hash = bcrypt.hash(this.password,salt)
+    const hash = await bcrypt.hash(this.password,salt)
+    console.log(hash)
     this.password = hash
     
-    
-})*/
+    next()
+})
 
 let user = db.model('User', userSchema);
 

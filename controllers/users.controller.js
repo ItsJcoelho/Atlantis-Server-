@@ -1,4 +1,6 @@
 var User = require("../DataBase/user.js")
+var joi = require("joi")
+var bcrypt = require('bcrypt')
 function GetUsers(req,res){
     User.find({}, function (err, users){
             if(err){
@@ -51,10 +53,37 @@ function EditUsersById(req,res){
         }
     })
 }
+async function userLogin(req,res){
+    const {error} = validate(req.body);
+    if (error) {
+        return res.status(400).send(error);
+    }
+    let user = await User.findOne({ email: req.body.email });
+    console.log(user.email)
+    if (!user) {
+        return res.status(400).send('Incorrect email or password.');
+    }
+    console.log(req.body.password)
+    console.log(user.password)
+    let validPassword = await bcrypt.compare(req.body.password, user.password);
+    if (!validPassword) {
+        return res.status(400).send('Incorrect email or password.');
+    }
+    res.send(true)
+}
+function validate(req) {
+    const schema = {
+        email: joi.string().required().email(),
+        password: joi.string().required()
+    };
+ 
+    return joi.validate(req, schema);
+}
 module.exports = {
     get: GetUsers,
     post: PostUser,
     delete: DeleteUser,
     getByID: GetUserById,
-    edit: EditUsersById
+    edit: EditUsersById,
+    login: userLogin
 }
