@@ -55,21 +55,28 @@ function EditUsersById(req,res){
 }
 async function userLogin(req,res){
     const {error} = validate(req.body);
+    console.log(req.body.email)
+    console.log(req.body.password)
+    let test = ""
     if (error) {
+        console.log("hi")
         return res.status(400).send(error);
     }
     let user = await User.findOne({ email: req.body.email });
-    console.log(user)
     if (!user) {
+        console.log("hi2")
         return res.status(400).send('Incorrect email or password.');
     }
-    console.log(req.body.password)
-    console.log(user.password)
     let validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) {
+        console.log("hi3")
         return res.status(400).send('Incorrect email or password.');
     }
-    res.send(true)
+    else {
+        test = {"idUser":user._id,"idType": user.type}
+        console.log(test)
+        return res.send(test);
+    }
 }
 function validate(req) {
     const schema = {
