@@ -5,7 +5,7 @@ let router = express.Router();
 let notificationController = require("../controllers/notifications.controller.js")
 
 
-router.route('/course')
+router.route('/notifications')
     .get(function(req,res){
         notificationController.get(req,res)
     })
@@ -13,7 +13,7 @@ router.route('/course')
         notificationController.post(req,res)
     })
     
-router.route('/course/:id')
+router.route('/notifications/:id')
     .delete(function(req,res){
         notificationController.delete(req,res)
     })
