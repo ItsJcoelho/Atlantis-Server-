@@ -10,7 +10,11 @@ let notificationSchema = new mongoose.Schema ({
     },
     description: {
         type:String
+    },
+    usersId: {
+        type: Array()
     }
+    
     
 })
 
